@@ -8,7 +8,9 @@ function LaptopDetail(props) {
         <div>
             {listLaptops.map((item) => {
                 return (
-                    <div>{item.id} {item.name}</div>
+                    <div>{item.id} {item.name} <span><button onClick={() => {
+                        props.deleteLaptop(item);
+                    }}>X</button></span></div>
                 )
             })}
         </div>

@@ -19,11 +19,17 @@ function Test(props) {
         setListLaptops([...listLaptops, laptop]);
     }
 
+    const deleteLaptop = (laptop) => {
+        setListLaptops(listLaptops.filter((item) => {
+            return item !== laptop;
+        }))
+    }
+
     return (
         <div>
             <LaptopInput addNewLaptop={addNewLaptop} />
             <hr />
-            <LaptopDetail listLaptops={listLaptops} />
+            <LaptopDetail listLaptops={listLaptops} deleteLaptop={deleteLaptop} />
         </div>
     );
 }

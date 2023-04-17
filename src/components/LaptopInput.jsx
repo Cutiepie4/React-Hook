@@ -5,7 +5,6 @@ function LaptopInput(props) {
     const [name, setName] = useState('');
     const [id, setId] = useState('');
 
-    const { addNewLaptop } = props;
 
     const changeNameInput = (event) => {
         setName(event.target.value);
@@ -18,12 +17,18 @@ function LaptopInput(props) {
     return (
         <div>
             <label>Id:</label>
-            <input type="text" onChange={changeIdInput} value={id} />
+            <input type="text" value={id} onChange={changeIdInput} />
             <br />
             <label>Name:</label>
-            <input type="text" onChange={changeNameInput} value={name} />
+            <input type="text" value={name} onChange={changeNameInput} />
             <br />
-            <button onClick={addNewLaptop({ id: id, name: name })}>Add</button>
+            <button onClick={() => {
+                if (name !== '' && id !== '') {
+                    props.addNewLaptop({ id: id, name: name });
+                    setName('');
+                    setId('');
+                }
+            }}>Add</button>
         </div>
     );
 }
