@@ -1,35 +1,19 @@
-import { useState } from 'react';
-import LaptopDetail from './LaptopDetail';
-import LaptopInput from './LaptopInput';
+import Home from './Home';
+import Laptop from './Laptop';
+import Laptops from './Laptops';
+import Nav from './Nav';
+import { Routes, Route } from 'react-router-dom';
 
 function Test(props) {
-
-    const [listLaptops, setListLaptops] = useState([
-        {
-            id: 'id01',
-            name: 'Asus'
-        },
-        {
-            id: 'id02',
-            name: 'Acer'
-        },
-    ]);
-
-    const addNewLaptop = (laptop) => {
-        setListLaptops([...listLaptops, laptop]);
-    }
-
-    const deleteLaptop = (laptop) => {
-        setListLaptops(listLaptops.filter((item) => {
-            return item !== laptop;
-        }))
-    }
-
     return (
         <div>
-            <LaptopInput addNewLaptop={addNewLaptop} />
-            <hr />
-            <LaptopDetail listLaptops={listLaptops} deleteLaptop={deleteLaptop} />
+            <Nav />
+            <Routes>
+                <Route index path='/' element={<Home />} />
+                <Route path='/home' element={<Home />} />
+                <Route path='/laptops' element={<Laptops />} />
+                <Route path='/laptops/:id' element={<Laptop />} />
+            </Routes>
         </div>
     );
 }
