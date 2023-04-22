@@ -1,8 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { addLaptop, updateLaptop } from '../redux/laptopSlice';
 
 function Laptop(props) {
+
+    const dispatch = useDispatch();
 
     const { state } = useLocation();
 
@@ -12,13 +16,8 @@ function Laptop(props) {
 
     const navigate = useNavigate();
 
-    const updateLaptop = () => {
-        axios.put(`http://localhost:8080/laptops/${id}`, laptop);
-        navigate('/laptops');
-    }
-
-    const addLaptop = () => {
-        axios.post(`http://localhost:8080/laptops/${id}`, laptop)
+    const handleSave = () => {
+        laptop.id === 0 ? dispatch(addLaptop(laptop)) : dispatch(updateLaptop(laptop));
         navigate('/laptops');
     }
 
@@ -26,7 +25,7 @@ function Laptop(props) {
         <div className="container">
             <h1>Laptop Detail</h1>
             <div className="col-lg-6">
-                <form className="form-control" onSubmit={id === 0 ? addLaptop : updateLaptop} >
+                <form className="form-control" onSubmit={handleSave} >
                     <label className="form-label" >Name</label>
                     <input className="form-control" type="text" value={laptop.name} onChange={(event) => setLaptop({ ...laptop, name: event.target.value })} />
                     <br /> <label className="form-label" >Price</label>
@@ -42,7 +41,7 @@ function Laptop(props) {
                     <button className="btn btn-success" type="submit">Save</button>
                 </form>
             </div>
-        </div>
+        </div >
     );
 }
 

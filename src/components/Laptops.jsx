@@ -1,45 +1,30 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchLaptops, deleteLaptops, addLaptop } from '../redux/laptopSlice';
 
 function Laptops(props) {
 
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch();
 
-    const [listLaptops, setListLaptops] = useState([]);
+    const { loading, listLaptops } = useSelector(state => state.laptopReducer);
 
     const [filteredListLaptops, setFilteredListLaptops] = useState([]);
 
     const [keyword, setKeyword] = useState('');
 
     useEffect(() => {
-        fetchData();
+        dispatch(fetchLaptops());
     }, [])
-
-    const fetchData = () => {
-        setLoading(true);
-        axios.get('http://localhost:8080/laptops')
-            .then(res => {
-                setListLaptops(res && res.data ? res.data : []);
-                setFilteredListLaptops(res && res.data ? res.data : []);
-            })
-            .then(() => {
-                setLoading(false);
-            });
-    }
 
     useEffect(() => {
         setFilteredListLaptops(listLaptops.filter((item) => {
             return item.name.toLowerCase().includes(keyword.toLowerCase());
         }))
     }, [keyword, listLaptops])
-
-    const deleteLaptop = (id) => {
-        axios.delete(`http://localhost:8080/laptops/${id}`)
-            .then(() => { fetchData() });
-    }
 
     return (
         <div className="container">
@@ -78,14 +63,14 @@ function Laptops(props) {
                             <td>{item.date}</td>
                             <td>
                                 <button style={{ 'marginRight': '8px' }} className="btn btn-success" onClick={() => { navigate(`/laptops/${item.id}`, { state: { laptop: item } }) }}>Edit</button>
-                                <button className="btn btn-danger" onClick={() => { deleteLaptop(item.id) }}>Delete</button>
+                                <button className="btn btn-danger" onClick={() => { dispatch(deleteLaptops(item.id)) }}>Delete</button>
                             </td>
                         </tr>
-                    )) : <tr key="">Loading...</tr>}
+                    )) : <tr key=""><td>Loading...</td></tr>}
                 </tbody>
             </table>
         </div>
-    );
-}
+    )
+};
 
 export default Laptops;
