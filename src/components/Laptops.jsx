@@ -1,8 +1,7 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchLaptops, deleteLaptops, addLaptop } from '../redux/laptopSlice';
+import { fetchLaptops, deleteLaptops } from '../redux/laptopSlice';
 
 function Laptops(props) {
 
@@ -10,7 +9,7 @@ function Laptops(props) {
 
     const dispatch = useDispatch();
 
-    const { loading, listLaptops } = useSelector(state => state.laptopReducer);
+    const { isLoading, listLaptops } = useSelector(state => state.laptopReducer);
 
     const [filteredListLaptops, setFilteredListLaptops] = useState([]);
 
@@ -18,7 +17,7 @@ function Laptops(props) {
 
     useEffect(() => {
         dispatch(fetchLaptops());
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         setFilteredListLaptops(listLaptops.filter((item) => {
@@ -52,7 +51,7 @@ function Laptops(props) {
                 </thead>
 
                 <tbody>
-                    {!loading ? filteredListLaptops.map((item, index) => (
+                    {!isLoading ? filteredListLaptops.map((item, index) => (
                         <tr key={item.id}>
                             <td>{index}</td>
                             <td>{item.id}</td>
