@@ -17,7 +17,7 @@ function Laptop(props) {
     const navigate = useNavigate();
 
     const handleSave = () => {
-        laptop.id === 0 ? dispatch(addLaptop(laptop)) : dispatch(updateLaptop(laptop));
+        id === 0 ? dispatch(addLaptop(laptop)) : dispatch(updateLaptop(laptop));
         navigate('/laptops');
     }
 

@@ -27,12 +27,13 @@ function Laptops(props) {
 
     return (
         <div className="container">
+            <h1>Laptop</h1>
             <div>
-                <h1>Laptop</h1>
                 <div>
                     <button className="btn btn-primary" onClick={() => { navigate('/laptops/0', { state: { laptop: {} } }) }}>Add New Laptop</button>
                 </div>
                 <div><input type="text" onChange={(event) => setKeyword(event.target.value)} value={keyword} /></div>
+                <div><button className="btn btn-success" onClick={() => { dispatch(fetchLaptops()) }}>Refresh</button></div>
             </div>
 
             <br />
@@ -65,7 +66,7 @@ function Laptops(props) {
                                 <button className="btn btn-danger" onClick={() => { dispatch(deleteLaptops(item.id)) }}>Delete</button>
                             </td>
                         </tr>
-                    )) : <tr key=""><td>Loading...</td></tr>}
+                    )) : <tr key="0"><td><h3>Loading...</h3></td></tr>}
                 </tbody>
             </table>
         </div>

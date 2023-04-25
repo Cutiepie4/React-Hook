@@ -1,9 +1,10 @@
 import '../styles/App.scss';
-import Test from './Test';
+import Main from './Main.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
-    <Test />
+    <Main />
   );
 }
 
