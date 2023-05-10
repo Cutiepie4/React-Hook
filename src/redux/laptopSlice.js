@@ -2,35 +2,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-    credentails: {},
     listLaptops: [],
     isLoading: true,
     error: '',
-    msg: ''
+    msg: '',
 };
 
 const axiosInstance = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Content-Type": "application/json"
-    },
-    withCredentials: true
+    }
 });
 
-export const loginApi = createAsyncThunk('laptops/loginApi', async (credentails) => {
-    return axios.post('http://localhost:8080/login-submit', credentails,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            withCredentials: true
-        }).then(() => credentails)
-        .catch(() => { });
-});
-
-export const logoutApi = createAsyncThunk('laptops/logoutApi', async () => {
-    return axios.get('http://localhost:8080/logout', { withCredentials: true }).then((res) => { console.log(res) })
-        .catch(() => { });
+export const searchLaptops = createAsyncThunk('laptops/searchLaptops', async (keyword) => {
+    const response = await axiosInstance.get(`/laptops?keyword=${keyword}`);
+    return response.data;
 });
 
 export const fetchLaptops = createAsyncThunk('laptops/fetchLaptops', async () => {
@@ -60,9 +47,6 @@ export const laptopSlice = createSlice({
 
     },
     extraReducers: {
-        [loginApi.fulfilled]: (state, action) => {
-            state.credentails = action.payload;
-        },
         [fetchLaptops.pending]: (state) => {
             state.isLoading = true;
         },
@@ -90,9 +74,15 @@ export const laptopSlice = createSlice({
         [updateLaptop.fulfilled]: (state, action) => {
             state.isLoading = false;
             state.listLaptops = [...state.listLaptops.filter(item => item.id !== action.payload.id), action.payload];
+        },
+        [searchLaptops.pending]: (state) => {
+            state.isLoading = true;
+        },
+        [searchLaptops.fulfilled]: (state, action) => {
+            state.isLoading = false;
+            state.listLaptops = action.payload;
         }
     }
 })
 
-// export const { } = laptopSlice.actions;
 export default laptopSlice.reducer;

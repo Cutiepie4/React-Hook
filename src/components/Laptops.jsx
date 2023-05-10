@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { fetchLaptops, deleteLaptops } from '../redux/laptopSlice';
+import { fetchLaptops, deleteLaptops, searchLaptops } from '../redux/laptopSlice';
 
 function Laptops(props) {
 
@@ -17,11 +17,11 @@ function Laptops(props) {
 
     useEffect(() => {
         dispatch(fetchLaptops());
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
         setFilteredListLaptops(listLaptops.filter((item) => {
-            return item.name.toLowerCase().includes(keyword.toLowerCase());
+            return item.name.toLowerCase().includes(keyword.toLowerCase()) || item.brand.toLowerCase().includes(keyword.toLowerCase());
         }))
     }, [keyword, listLaptops])
 
@@ -32,8 +32,9 @@ function Laptops(props) {
                 <div>
                     <button className="btn btn-primary" onClick={() => { navigate('/laptops/0', { state: { laptop: {} } }) }}>Add New Laptop</button>
                 </div>
-                <div><input type="text" onChange={(event) => setKeyword(event.target.value)} value={keyword} /></div>
-                <div><button className="btn btn-success" onClick={() => { dispatch(fetchLaptops()) }}>Refresh</button></div>
+                <div><input placeholder='Search by name or brand...' type="text" onChange={(event) => setKeyword(event.target.value)} value={keyword} /></div>
+                {/* <div><button className="btn btn-success" onClick={() => { dispatch(fetchLaptops()) }}>Refresh</button></div> */}
+                <div><button className='btn btn-success' onClick={() => { dispatch(searchLaptops(keyword)) }}>Search</button></div>
             </div>
 
             <br />
